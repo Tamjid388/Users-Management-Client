@@ -51,6 +51,21 @@ app.post("/users",async(req,res)=>{
   const result = await usersCollection.insertOne(user);
   res.send(result)
 })
+// Update
+app.put('/users/:id',async(req,res)=>{
+  const id= req.params.id
+  const user=req.body
+  const filter={_id:new ObjectId(id)}
+  const options={upsert:true}
+  const updatedUser={
+    $set:{
+      name:user.name,
+      email:user.email
+    }
+  }
+  const result=await usersCollection.updateOne(filter,updatedUser,options)
+res.send(result)
+})
 app.delete('/users/:id',async(req,res)=>{
   const id=req.params.id;
   console.log("Please delete id:",id);
